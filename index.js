@@ -81,7 +81,7 @@ app.get("/", (req, res) => {
 });
 
 //測試連資料庫
-router.get('/db-check', async (req, res) => {
+app.get('/db-check', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT 1 + 1 AS result');
     res.json({ status: 'Connected', data: rows });
