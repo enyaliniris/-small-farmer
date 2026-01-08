@@ -1,7 +1,4 @@
-require("dotenv").config({
-  path: "./production.env",
-});
-
+require("dotenv").config();
 //***********************************以下引入npm外掛及模組***********************************
 
 // 引入express
