@@ -80,7 +80,7 @@ app.get("/", (req, res) => {
 //測試連資料庫
 app.get('/db-check', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT 1 + 1 AS result');
+    const [rows] = await db.query('SELECT button_name FROM sidebar;');
     res.json({ status: 'Connected', data: rows });
   } catch (err) {
     res.status(500).json({ status: 'Error', message: err.message });
