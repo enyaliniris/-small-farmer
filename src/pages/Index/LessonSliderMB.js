@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { LESSON_DATA, HOST } from '../../components/api_config'
+import { getLessonList, getImageUrl } from '../../utils/api'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 import Slider from 'react-slick'
 import '../../css/index.css'
 
@@ -42,9 +41,8 @@ function LessonSliderMB() {
   const [lessonCategoryFilter, setLessonCategoryFilter] = useState('農耕')
   const [leftbtn, setLeftbtn] = useState(0)
   const getLessonData = async () => {
-    const res = await axios.get('http://localhost:3033/lesson/lessonList')
-    // console.log(res)
-    setLessonData(res.data)
+    const data = await getLessonList()
+    setLessonData(data)
   }
 
   //純函式-傳入資料陣列,以lessonCategory進行過濾=>回傳過濾後的資料陣列
@@ -170,7 +168,7 @@ function LessonSliderMB() {
                 <img
                   className="class-list2"
                   data-lid={v.lesson_id}
-                  src={`${HOST}/images/lesson/${imgarr[0]}`}
+                  src={getImageUrl(imgarr[0])}
                   alt={v.lesson_img}
                 />
               </div>
