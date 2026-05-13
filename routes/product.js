@@ -244,7 +244,7 @@ const getProductData = async (req) => {
 // 以下設定路由
 
 // 商品清單資料
-router.get("/", async (req, res) => {
+router.get("/productList", async (req, res) => {
   res.json(await getListData(req));
 });
 
