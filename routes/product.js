@@ -242,12 +242,9 @@ const getProductData = async (req) => {
 };
 
 // 以下設定路由
-router.get("/", (req, res) => {
-  res.send("helloooo");
-});
 
 // 商品清單資料
-router.get("/api", async (req, res) => {
+router.get("/", async (req, res) => {
   res.json(await getListData(req));
 });
 
