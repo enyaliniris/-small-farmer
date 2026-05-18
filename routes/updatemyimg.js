@@ -51,20 +51,27 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 
 
 router.post("/myImg", async (req, res) => {
-   if (!res.locals.bearer) return;
-    const myAuth = req.body.myAuth;
-    if (myAuth === null) return;
+  if (!res.locals.bearer) return res.status(401).json({ error: "未授權" });
+  
+  const myAuth = req.body.myAuth;
+  
+  if (!myAuth || !myAuth.accountId) {
+    return res.status(400).json({ error: "缺少 accountId" });
+  }
 
-    let result = {};
-    const sql_myimg = `SELECT member_img FROM members WHERE sid=${myAuth.accountId}`;
-    const [r_sql_myimg] = await db.query(sql_myimg);
-    result = r_sql_myimg[0]
+  try {
+    const sql_myimg = `SELECT member_img FROM members WHERE sid=?`;
+    const [r_sql_myimg] = await db.query(sql_myimg, [myAuth.accountId]);
+    
+    const result = r_sql_myimg[0] || {}
     console.log("img", result);
     res.json(result);
     
-    
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "伺服器錯誤" })
   }
-);
+});
 
 
 module.exports = router;
