@@ -1,35 +1,29 @@
 const express = require("express");
 const router = express.Router();
-const db = require("./../modules/db_connect");
 const multer = require("multer");
-const fs = require("fs");
-const path = require("path");
+const cloudinary = require('cloudinary').v2
+const { CloudinaryStorage } = require('multer-storage-cloudinary')
 
 router.use(express.json());
 
-// 配置Multer中間件
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, __dirname + '/../public/images/avatar')
-    },
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        const name = `${Date.now()}-${Math.floor(Math.random() * 1000)}${ext}`;
-        cb(null, name);
-    }
-});
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
-const upload = multer({ storage });
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'avatar',
+    allowed_formats: ['jpg', 'png', 'jpeg'],
+  },
+})
 
-// POST請求處理程序
+const upload = multer({ storage })
+
 router.post("/upload", upload.single("file"), async (req, res) => {
-    res.json(req.file.filename)
-
-});
+  res.json(req.file.path)  // path 是 Cloudinary 回傳的完整 URL
+})
 
 module.exports = router;
-
-
-
-
-
