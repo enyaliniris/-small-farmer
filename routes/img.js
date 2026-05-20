@@ -35,7 +35,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 
 
 
-router.post("/updateimg", upload.single("file"), async (req, res) => {
+router.post("/updateImg", upload.single("file"), async (req, res) => {
   if (res.locals.bearer.sid && res.locals.bearer.account) {
     const sid = res.locals.bearer.sid
     const img = req.file.path 

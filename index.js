@@ -198,7 +198,7 @@ app.use("/weekcalender", require("./routes/weekcalender"));
 app.use("/member", require("./routes/editmember"));
 
 //更新會員圖片
-app.use("/memberImg", require("./routes/updatemyimg"));
+//app.use("/memberImg", require("./routes/updatemyimg"));
 
 //我的勳章
 app.use("/awards",require("./routes/awards"))
