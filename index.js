@@ -101,7 +101,7 @@ app.post("/login", async (req, res) => {
 
   const [rows] = await db.query(sql, [req.body.account]);
   if (!rows.length) {
-    // 帳號是錯的
+    console.log("帳號是錯的")
     output.code = 401;
     return res.json(output);
   }
@@ -115,7 +115,7 @@ app.post("/login", async (req, res) => {
   } catch (ex) { }
 
   if (!passwordCorrect) {
-    // 密碼是錯的
+    console.log("密碼是錯的")
     output.code = 402;
   } else {
     
