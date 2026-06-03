@@ -62,29 +62,38 @@ router.post("/add/:type", upload.none(), async (req, res) => {
     postData: req.body,
     error: "",
   };
-  // console.log(res.locals.bearer);
+
   if (res.locals.bearer.sid && res.locals.bearer.account) {
     const member_sid = res.locals.bearer.sid;
-    // 有登入
+
     if (req.params.type === "product") {
-      // 商品收藏
       let { product_sid } = req.body;
-      const sql =
-        "INSERT INTO `bookmark_product`(`member_sid`, `product_sid`) VALUES (?,?)";
-      const [result] = await db.query(sql, [member_sid, product_sid]);
-      output.success = !!result.affectedRows;
-      output.error = output.success ? "" : "新增商品收藏發生錯誤";
+      const checkSql = "SELECT sid FROM `bookmark_product` WHERE `member_sid` = ? AND `product_sid` = ?";
+      const [[existing]] = await db.query(checkSql, [member_sid, product_sid]);
+
+      if (existing) {
+        output.error = "已加入收藏";
+      } else {
+        const sql = "INSERT INTO `bookmark_product`(`member_sid`, `product_sid`) VALUES (?,?)";
+        const [result] = await db.query(sql, [member_sid, product_sid]);
+        output.success = !!result.affectedRows;
+        output.error = output.success ? "" : "新增商品收藏發生錯誤";
+      }
     } else {
-      // 課程收藏
       let { lesson_sid } = req.body;
-      const sql =
-        "INSERT INTO `bookmark_lesson`(`member_sid`, `lesson_sid`) VALUES (?,?)";
-      const [result] = await db.query(sql, [member_sid, lesson_sid]);
-      output.success = !!result.affectedRows;
-      output.error = output.success ? "" : "新增課程收藏發生錯誤";
+      const checkSql = "SELECT sid FROM `bookmark_lesson` WHERE `member_sid` = ? AND `lesson_sid` = ?";
+      const [[existing]] = await db.query(checkSql, [member_sid, lesson_sid]);
+
+      if (existing) {
+        output.error = "已加入收藏";
+      } else {
+        const sql = "INSERT INTO `bookmark_lesson`(`member_sid`, `lesson_sid`) VALUES (?,?)";
+        const [result] = await db.query(sql, [member_sid, lesson_sid]);
+        output.success = !!result.affectedRows;
+        output.error = output.success ? "" : "新增課程收藏發生錯誤";
+      }
     }
   } else {
-    // 沒登入
     output.error = "沒有登入";
   }
   res.json(output);
