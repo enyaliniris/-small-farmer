@@ -24,6 +24,7 @@ const getListData = async (req) => {
   // let orderscore = req.query.orderscore;
   let search = req.query.search;
 
+
   if (search && search.trim()) {
     search = search.trim();
     queryObj = { ...queryObj, search };
@@ -43,26 +44,27 @@ const getListData = async (req) => {
         break;
     }
   }
+ const sanitize = (str) => str.replace(/[^0-9,]/g, '')
   if (brand) {
-    let b = brand.split("").join(",");
+    //let b = brand.split("").join(",");
     queryObj = { ...queryObj, brand };
-    sqlWhere += `AND \`product_brand_sid\` IN (${b}) `;
+    sqlWhere += `AND \`product_brand_sid\` IN (${sanitize(b)}) `;
   }
   if (cate) {
     if (brand) {
-      let b = brand.split("").join(",");
+      //let b = brand.split("").join(",");
       queryObj = { ...queryObj, brand };
-      sqlWhere += `AND \`product_brand_sid\` IN (${b}) `;
+      sqlWhere += `AND \`product_brand_sid\` IN (${sanitize(b)}) `;
     }
     if (pro) {
-      let p = pro.split("").join(",");
+      //let p = pro.split("").join(",");
       queryObj = { ...queryObj, pro };
-      sqlWhere += `AND \`product_processed_sid\` IN (${p})`;
+      sqlWhere += `AND \`product_processed_sid\` IN (${sanitize(p)})`;
     }
     if (veg) {
-      let v = veg.split("").join(",");
+      //let v = veg.split("").join(",");
       queryObj = { ...queryObj, veg };
-      sqlWhere += `AND \`product_vegetable_sid\` IN (${v})`;
+      sqlWhere += `AND \`product_vegetable_sid\` IN (${sanitize(v)})`;
     }
     queryObj = { ...queryObj, cate };
     sqlWhere += `AND \`product_category_sid\` = ${cate} `;
