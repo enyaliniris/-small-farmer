@@ -48,23 +48,23 @@ const getListData = async (req) => {
   if (brand) {
     //let b = brand.split("").join(",");
     queryObj = { ...queryObj, brand };
-    sqlWhere += `AND \`product_brand_sid\` IN (${sanitize(b)}) `;
+    sqlWhere += `AND \`product_brand_sid\` IN (${sanitize(brand)}) `;
   }
   if (cate) {
     if (brand) {
       //let b = brand.split("").join(",");
       queryObj = { ...queryObj, brand };
-      sqlWhere += `AND \`product_brand_sid\` IN (${sanitize(b)}) `;
+      sqlWhere += `AND \`product_brand_sid\` IN (${sanitize(brand)}) `;
     }
     if (pro) {
       //let p = pro.split("").join(",");
       queryObj = { ...queryObj, pro };
-      sqlWhere += `AND \`product_processed_sid\` IN (${sanitize(p)})`;
+      sqlWhere += `AND \`product_processed_sid\` IN (${sanitize(pro)})`;
     }
     if (veg) {
       //let v = veg.split("").join(",");
       queryObj = { ...queryObj, veg };
-      sqlWhere += `AND \`product_vegetable_sid\` IN (${sanitize(v)})`;
+      sqlWhere += `AND \`product_vegetable_sid\` IN (${sanitize(veg)})`;
     }
     queryObj = { ...queryObj, cate };
     sqlWhere += `AND \`product_category_sid\` = ${cate} `;
