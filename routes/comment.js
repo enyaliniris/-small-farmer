@@ -190,7 +190,8 @@ router.post("/add/:type", upload.none(), async (req, res) => {
       } = req.body;
       const sql =
         "INSERT INTO `comment_product`(`order_product_details_sid`,`member_sid`, `product_sid`,`comment_value`,`comment_content`) VALUES (?,?,?,?,?)";
-      const [result] = await db.query(sql, [
+      try {
+        const [result] = await db.query(sql, [
         order_product_details_sid,
         member_sid,
         product_sid,
@@ -199,6 +200,10 @@ router.post("/add/:type", upload.none(), async (req, res) => {
       ]);
       output.success = !!result.affectedRows;
       output.error = output.success ? "" : "新增商品評論出錯";
+      } catch (err) {
+        output.error = err.message;  // 方便 debug
+        return res.status(500).json(output);
+      }
     } else {
       // 課程評論
       let {
@@ -209,15 +214,21 @@ router.post("/add/:type", upload.none(), async (req, res) => {
       } = req.body;
       const sql =
         "INSERT INTO `comment_lesson`(`order_lesson_details_sid`,`member_sid`, `lesson_sid`,`comment_value`,`comment_content`) VALUES (?,?,?,?,?)";
-      const [result] = await db.query(sql, [
+      
+      try {
+        const [result] = await db.query(sql, [
         order_lesson_details_sid,
         member_sid,
         lesson_sid,
         comment_value,
         comment_content,
       ]);
-      output.success = !!result.affectedRows;
-      output.error = output.success ? "" : "新增課程評論出錯";
+        output.success = !!result.affectedRows;
+        output.error = output.success ? "" : "新增課程評論出錯";
+      } catch (err) {
+        output.error = err.message;  // 方便 debug
+        return res.status(500).json(output);
+      }
     }
   } else {
     // 沒登入

@@ -54,7 +54,7 @@ const getListData = async (req) => {
 
   // 課程評論
   let comments = [];
-  const sql3 = `SELECT comment_lesson.*, members.member_nickname FROM comment_lesson LEFT JOIN members ON comment_lesson.member_sid=members.sid  WHERE lesson_sid = ${req.params.sid} ${sqlOrder}`;
+  const sql3 = `SELECT comment_lesson.*, members.member_nickname, members.member_img FROM comment_lesson LEFT JOIN members ON comment_lesson.member_sid=members.sid WHERE lesson_sid = ${req.params.sid} ${sqlOrder}`;
   [comments] = await db.query(sql3);
 
   // 將評論平均分數放入商品資料
